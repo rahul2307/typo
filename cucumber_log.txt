@@ -1,0 +1,89 @@
+Using the default profile...
+Feature: Create Blog
+  As an author
+  In order to gift my thoughts to the world
+  I want to create a blog
+
+  Scenario: Create blog page shown      # features/create_blog.feature:6
+    Given I am on the home page         # features/step_definitions/web_steps.rb:68
+    Then I should see "Welcome"         # features/step_definitions/web_steps.rb:129
+    And I should see "My Shiny Weblog!" # features/step_definitions/web_steps.rb:129
+
+  Scenario: Create blog page not shown when blog created # features/create_blog.feature:11
+    Given the blog is set up                             # features/step_definitions/web_steps.rb:34
+    When I am on the home page                           # features/step_definitions/web_steps.rb:68
+    Then I should not see "My Shiny Weblog!"             # features/step_definitions/web_steps.rb:147
+    And I should see "Teh Blag"                          # features/step_definitions/web_steps.rb:129
+
+Feature: Add and edit categories
+  As a blog administrator
+  In order to share my thoughts with the world
+  I want to be able to add and edit categories
+
+  Background:                            # features/create_categories.feature:6
+    Given the blog is set up             # features/step_definitions/web_steps.rb:34
+    And I am logged into the admin panel # features/step_definitions/web_steps.rb:46
+
+  Scenario: Successfully add and edit categories            # features/create_categories.feature:10
+    Given I am on categories page                           # features/step_definitions/web_steps.rb:68
+    When I fill in "category_name" with "Thriller"          # features/step_definitions/web_steps.rb:84
+    And I fill in "category_keywords" with "keyword1"       # features/step_definitions/web_steps.rb:84
+    And I fill in "category_permalink" with "permalink1"    # features/step_definitions/web_steps.rb:84
+    And I fill in "category_description" with "Description" # features/step_definitions/web_steps.rb:84
+    Then I press "Save"                                     # features/step_definitions/web_steps.rb:76
+    Then I should see "Category was successfully saved"     # features/step_definitions/web_steps.rb:129
+
+  Scenario: Successfully create categories                  # features/create_categories.feature:19
+    Given I am on categories page                           # features/step_definitions/web_steps.rb:68
+    When I fill in "category_name" with "Thriller"          # features/step_definitions/web_steps.rb:84
+    And I fill in "category_keywords" with "keyword1"       # features/step_definitions/web_steps.rb:84
+    And I fill in "category_permalink" with "permalink1"    # features/step_definitions/web_steps.rb:84
+    And I fill in "category_description" with "Description" # features/step_definitions/web_steps.rb:84
+    Then I press "Save"                                     # features/step_definitions/web_steps.rb:76
+    Then I should see "Thriller"                            # features/step_definitions/web_steps.rb:129
+    Then I should see "keyword1"                            # features/step_definitions/web_steps.rb:129
+    Then I should see "permalink1"                          # features/step_definitions/web_steps.rb:129
+    Then I should see "Description"                         # features/step_definitions/web_steps.rb:129
+
+  Scenario: Successfully edit categories                            # features/create_categories.feature:32
+    Given I am on categories page                                   # features/step_definitions/web_steps.rb:68
+    When I fill in "category_name" with "Thriller"                  # features/step_definitions/web_steps.rb:84
+    And I fill in "category_keywords" with "keyword1"               # features/step_definitions/web_steps.rb:84
+    And I fill in "category_permalink" with "permalink1"            # features/step_definitions/web_steps.rb:84
+    And I fill in "category_description" with "Description"         # features/step_definitions/web_steps.rb:84
+    And I press "Save"                                              # features/step_definitions/web_steps.rb:76
+    And I follow "Thriller"                                         # features/step_definitions/web_steps.rb:80
+    When I fill in "category_name" with "Thriller_changed"          # features/step_definitions/web_steps.rb:84
+    And I fill in "category_keywords" with "keyword1_changed"       # features/step_definitions/web_steps.rb:84
+    And I fill in "category_permalink" with "permalink1_changed"    # features/step_definitions/web_steps.rb:84
+    And I fill in "category_description" with "Description_changed" # features/step_definitions/web_steps.rb:84
+    And I press "Save"                                              # features/step_definitions/web_steps.rb:76
+    Then I should see "Thriller_changed"                            # features/step_definitions/web_steps.rb:129
+    Then I should see "keyword1_changed"                            # features/step_definitions/web_steps.rb:129
+    Then I should see "permalink1_changed"                          # features/step_definitions/web_steps.rb:129
+    Then I should see "Description_changed"                         # features/step_definitions/web_steps.rb:129
+
+Feature: Write Articles
+  As a blog administrator
+  In order to share my thoughts with the world
+  I want to be able to add articles to my blog
+
+  Background:                            # features/write_article.feature:6
+    Given the blog is set up             # features/step_definitions/web_steps.rb:34
+    And I am logged into the admin panel # features/step_definitions/web_steps.rb:46
+
+  Scenario: Successfully write articles                                  # features/write_article.feature:10
+    Given I am on the new article page                                   # features/step_definitions/web_steps.rb:68
+    When I fill in "article_title" with "Foobar"                         # features/step_definitions/web_steps.rb:84
+    And I fill in "article__body_and_extended_editor" with "Lorem Ipsum" # features/step_definitions/web_steps.rb:84
+    And I press "Publish"                                                # features/step_definitions/web_steps.rb:76
+    Then I should be on the admin content page                           # features/step_definitions/web_steps.rb:254
+    When I go to the home page                                           # features/step_definitions/web_steps.rb:72
+    Then I should see "Foobar"                                           # features/step_definitions/web_steps.rb:129
+    When I follow "Foobar"                                               # features/step_definitions/web_steps.rb:80
+    Then I should see "Lorem Ipsum"                                      # features/step_definitions/web_steps.rb:129
+
+6 scenarios (6 passed)
+57 steps (57 passed)
+0m4.944s
+Coverage report generated for Cucumber Features, RSpec to /home/ec2-user/environment/typo/coverage. 13440 / 15013 LOC (89.52%) covered.
